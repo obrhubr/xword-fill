@@ -1,5 +1,6 @@
 import click
 import time
+import sys
 import xword_converter as xword
 
 from worddb import WordDB
@@ -17,12 +18,17 @@ def main(wordlist, input_file, input_format, output_file, output_format):
 
 	# Read in wordlist
 	words = load_wordlist(wordlist)
-	worddb = WordDB(words)
-	
 	# Print stats about the wordlist
 	print(f"🆗 - Successfully loaded wordlist from {wordlist}.")
 	print(f"Imported {len(words)} words.\n")
 
+	# Build database
+	worddb = WordDB(words)
+	# Print stats about the db
+	print(f"🆗 - Successfully built the word-db.")
+	size = sys.getsizeof(worddb.wordlist) + sys.getsizeof(worddb.bitmap)
+	print(f"DB has a size of {round(size / 1024, 2)}mb.\n")
+	
 	# Read in puzzle
 	converter = xword.Converter()
 	puzzle = converter.import_puzzle(input_file, input_format)
