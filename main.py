@@ -8,12 +8,13 @@ from util import *
 from solver import Crossword_Solver
 
 @click.command()
-@click.option('--wordlist', default="./wordlists/wordlist_combined.txt", type=click.Path(exists=True), help='The wordlist to use. Expected format: "word;score".')
-@click.option('--input-file', default="./puzzles/fill.json", type=click.Path(exists=True), help='The puzzle to fill.')
-@click.option('--input-format', default="json", type=str, help='The format of the puzzle to fill.')
-@click.option('--output-file', help='The path to which to write the filled puzzle file.')
+@click.argument('wordlist', type=click.Path(exists=True))
+@click.argument('input-file', type=click.Path(exists=True))
+@click.argument('input-format', type=str)
+@click.option('--output-file', type=click.Path(exists=True), help='The path to which to write the filled puzzle file.')
 @click.option('--output-format', type=str, help='The format in which to write the filled puzzle.')
-def main(wordlist, input_file, input_format, output_file, output_format):
+@click.option('--min-score', default=0, type=int, help='Minimum score to achieve.')
+def main(wordlist, input_file, input_format, output_file, output_format, min_score):
 	print(f"Starting XWORD filler.\n")
 
 	# Read in wordlist
@@ -35,17 +36,16 @@ def main(wordlist, input_file, input_format, output_file, output_format):
 
 	# Print stats about the puzzle
 	print(f"🆗 - Successfully loaded puzzle from {input_file}.")
-	print(f"Puzzle size: {puzzle.dimensions[0]}x{puzzle.dimensions[1]}.")
-	print(f"Words to fill: {len(puzzle.across_clues + puzzle.down_clues)}.")
+	print(f"Puzzle size: {puzzle.dimensions[0]}x{puzzle.dimensions[1]}. Words to fill: {len(puzzle.across_clues + puzzle.down_clues)}")
 	print_grid(puzzle.grid, puzzle.dimensions[0], puzzle.dimensions[1])
 
 	# Start timer
-	print(f"🔄 - Attempting to solve puzzle.")
+	print(f"🔄 - Attempting to solve puzzle. {'Minimum score ' + str(min_score) + '.' if min_score else ''}")
 	start = time.time()
 
 	# Solve puzzle
 	solver = Crossword_Solver(puzzle, worddb)
-	filled_puzzle, score = solver.solve()
+	filled_puzzle, score = solver.solve(min_score=min_score)
 
 	# Print time needed to solve
 	end = time.time()

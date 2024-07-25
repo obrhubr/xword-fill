@@ -98,11 +98,15 @@ class Crossword_Solver:
 		# Return the sorted clues
 		return [clue for _, clue in clues_index]
 	
-	def __recur(self, grid, best_score, words_used, clues):
+	def __recur(self, grid, min_score, words_used, clues):
 		if len(clues) == 0:
 			score = self.__check_filled(grid, words_used)
 			if score:
-				return grid, score
+				# Return the solution if the score is high enough
+				if score >= min_score:
+					return grid, score
+				
+				return None
 			else:
 				raise Exception("Error while filling grid.")
 
@@ -113,7 +117,7 @@ class Crossword_Solver:
 		if not " " in clue["word"]:
 			return self.__recur(
 				grid,
-				best_score,
+				min_score,
 				words_used, 
 				self.__sort_clues(clues[1:], grid)
 			)
@@ -128,7 +132,7 @@ class Crossword_Solver:
 		if squares_filled:
 			return self.__recur(
 				grid,
-				best_score,
+				min_score,
 				words_used, 
 				self.__sort_clues(clues[1:], grid)
 			)
@@ -151,7 +155,7 @@ class Crossword_Solver:
 			# Proceed by filling the grid
 			solution = self.__recur(
 				filled,
-				best_score,
+				min_score,
 				filled_words_used, 
 				self.__sort_clues(clues[1:], grid)
 			)
@@ -183,7 +187,7 @@ class Crossword_Solver:
 
 		return filled_puzzle
 	
-	def solve(self):
+	def solve(self, min_score=0):
 		# Get words that the user already input
 		words_used = []
 		for clue in self.puzzle.across_clues + self.puzzle.down_clues:
@@ -195,7 +199,7 @@ class Crossword_Solver:
 		try:
 			filled_grid, score = self.__recur(
 				self.puzzle.grid,
-				0,
+				min_score,
 				words_used,
 				self.puzzle.across_clues + self.puzzle.down_clues
 			)
