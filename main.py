@@ -47,7 +47,7 @@ def main(wordlist, input_file, input_format, output_file, output_format):
 
 	# Make this beautiful
 	print(f"The filled puzzle has a score of: {score}.")
-	print_grid(filled_puzzle.grid, puzzle.dimensions[0], puzzle.dimensions[1])
+	print_grid(filled_puzzle.grid, puzzle.dimensions[0], puzzle.dimensions[1], puzzle.grid)
 
 	if output_file and output_format:
 		# Write the filled puzzle to file

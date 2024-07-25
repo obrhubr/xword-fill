@@ -1,12 +1,20 @@
-def print_grid(grid, width, height):
+def print_grid(grid, width, height, old_grid=None):
 	string = ""
 
 	for y in range(height):
 		for x in range(width):
 			if grid[y * width + x][0] == ".":
-				string += " X "
+				string += f" \033[1;40;40mX\033[0m "
 			else:
-				string += f" {grid[y * width + x][0]} "
+				if old_grid:
+					new = grid[y * width + x] != old_grid[y * width + x]
+					if new:
+						string += f" \033[1;92m{grid[y * width + x][0]}\033[0m "
+					else:
+						string += f" \033[1;91m{grid[y * width + x][0]}\033[0m "
+				else:
+					string += f" \033[1;91m{grid[y * width + x][0]}\033[0m "
+
 		string += "\n"
 
 	print(string)
