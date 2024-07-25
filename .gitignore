@@ -1,0 +1,7 @@
+wordlists/*
+!wordlists/.gitkeep
+puzzles/*
+!puzzles/.gitkeep
+
+__pycache__
+fill.ipynb
