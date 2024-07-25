@@ -8,11 +8,13 @@ from solver import Crossword_Solver
 
 @click.command()
 @click.option('--wordlist', default="./wordlists/wordlist_combined.txt", type=click.Path(exists=True), help='The wordlist to use. Expected format: "word;score".')
-@click.option('--input-file', default="./puzzles/puzzle.json", type=click.Path(exists=True), help='The puzzle to fill.')
+@click.option('--input-file', default="./puzzles/fill.json", type=click.Path(exists=True), help='The puzzle to fill.')
 @click.option('--input-format', default="json", type=str, help='The format of the puzzle to fill.')
 @click.option('--output-file', help='The path to which to write the filled puzzle file.')
 @click.option('--output-format', type=str, help='The format in which to write the filled puzzle.')
 def main(wordlist, input_file, input_format, output_file, output_format):
+	print(f"Starting XWORD filler.\n")
+
 	# Read in wordlist
 	words = load_wordlist(wordlist)
 	worddb = WordDB(words)

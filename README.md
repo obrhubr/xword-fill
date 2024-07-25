@@ -12,7 +12,35 @@ The table is a dictionary with keys in the following format: `{word length}{char
 
 Another more complicated example: `_AR__`. Because 2 letters are set here, we cannot directly search the lookup table for matching words. We instead perform two searches, one for `_A___` and another for `__R__`. We then get the intersection of both search results, as we are only interested in words that have both an `A` in the second position and an `R` in the third.
 
-This method significantly speeds up searching for matching words. According to my experiments, by about 300 times for small 5 by 5 puzzles (from `20.00s` to `0.058s`).
+This method significantly speeds up searching for matching words. According to my experiments, by about 200 times for small 5 by 5 puzzles (from `20.00s` to `0.10s`).
+
+## Example output
+
+```
+Starting XWORD filler.
+
+🆗 - Successfully loaded wordlist from ./wordlists/wordlist_combined.txt.
+Imported 175873 words.
+
+🆗 - Successfully loaded puzzle from ./puzzles/puzzle.json.
+Puzzle size: 5x5.
+Words to fill: 10.
+ M  E  T  R  O 
+       R       
+       A       
+       M       
+ X     S     X 
+
+🔄 - Attempting to solve puzzle.
+✅ - Done solving puzzle in 0.189s.
+
+The filled puzzle has a score of: 350.
+ M  E  T  R  O 
+ E  N  R  O  L 
+ L  L  A  M  A 
+ D  A  M  E  N 
+ X  I  S  O  X
+```
 
 ## Usage
 
